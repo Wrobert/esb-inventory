@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="FileProcessSequence" trace="disable"
+	xmlns="http://ws.apache.org/ns/synapse">
+	<inSequence>
+		<property name="source" expression="//source" />
+		<property name="destination" expression="//destination" />
+		<property name="OUT_ONLY" value="true" scope="default" type="STRING" />
+		<fileconnector.search>
+			<source>{$ctx:source}</source>
+			<filePattern>.*\.txt</filePattern>
+			<recursiveSearch>false</recursiveSearch>
+		</fileconnector.search>
+		<property name="sequence" value="after-smooks" />
+		<iterate xmlns:ns="http://org.wso2.esbconnectors.FileConnector"
+			expression="//ns:result/ns:file">
+			<target>
+				<sequence>
+					<log level="full" />
+					<fileconnector.copy>
+						<source>{$ctx:source}</source>
+						<destination>{$ctx:destination}</destination>
+					</fileconnector.copy>
+					<drop />
+				</sequence>
+			</target>
+		</iterate>
+	</inSequence>
+</sequence>

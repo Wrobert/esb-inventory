@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="FileConnectorTemplate" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter name="ArgOperation"/>
+    <parameter name="ArgContentType"/>
+    <parameter name="ArgFileLocation"/>
+    <parameter name="ArgFileName"/>
+    <parameter name="ArgFileBeforeProcess"/>
+    <parameter name="ArgFileAfterProcess"/>
+    <sequence>
+        <log level="custom" separator=",">
+            <property name="FileConnectorTemplate" value="FileConnectorTemplate Started."/>
+            <property name="ArgOperation" value="$func:ArgOperation"/>
+        </log>
+        <log level="full"/>
+        <property name="OUT_ONLY" scope="default" type="STRING" value="true"/>
+        <switch source="get-property('$func:ArgOperation')">
+            <case regex="READ">
+                <log level="custom">
+                    <property expression="get-property('ArgOperation')" name="ArgOperation"/>
+                </log>
+                <!-- READ FILE -->
+                <fileconnector.read>
+                    <source>{$ctx:ArgFileLocation}</source>
+                    <contentType>{$ctx:ArgContentType}</contentType>
+                    <filePattern>{$ctx:ArgFileName}</filePattern>
+                </fileconnector.read>
+            </case>
+            <case regex="MOVE">
+                <log level="custom">
+                    <property expression="get-property('ArgOperation')" name="ArgOperation"/>
+                </log>
+                <fileconnector.move>
+                    <source>{$ctx:ArgFileLocation}</source>
+                    <destination>{$ctx:ArgFileAfterProcess}</destination>
+                </fileconnector.move>
+            </case>
+            <case regex="COPY">
+                <log level="custom">
+                    <property expression="get-property('ArgOperation')" name="ArgOperation"/>
+                </log>
+                <fileconnector.copy>
+                    <source>{$ctx:ArgFileBeforeProcess}</source>
+                    <destination>{$ctx:ArgFileLocation}</destination>
+                    <filePattern>{$ctx:ArgFileName}</filePattern>
+                </fileconnector.copy>
+            </case>
+            <case regex="DELETE">
+                <log level="custom">
+                    <property expression="get-property('ArgOperation')" name="ArgOperation"/>
+                </log>
+                <fileconnector.delete>
+                    <source>{$ctx:ArgFileLocation}</source>
+                </fileconnector.delete>
+            </case>
+            <default>
+                <log level="custom">
+                    <property name="ArgOperation" value="Undefined."/>
+                    <property expression="get-property('ArgOperation')" name="Default selected because of"/>
+                </log>
+            </default>
+        </switch>
+    </sequence>
+</template>

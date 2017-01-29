@@ -1,0 +1,4 @@
+1485547171879	Delete resource 'Inventory-esb/src/main/synapse-config/sequences/FileProcessSequence.xml'
+1485550324054	Delete resource 'Inventory-esb/src/main/synapse-config/proxy-services/InventoryProxyService.xml'
+1485635286078	Delete resource 'Inventory-esb/src/main/synapse-config/templates/xxx.xml'
+1485710555989	Delete resource 'Inventory-esb/src/main/synapse-config/sequences/SOAP11FAULT.xml'

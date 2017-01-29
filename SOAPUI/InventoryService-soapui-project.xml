@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      	<!-- Operations: READ, MOVE, COPY, DELETE -->
+   		<operation>READ</operation>
+		<contentType>Application/XML</contentType> 
+		<fileName>Status.xml</fileName> 
+   		<fileLocation>file://C:/temp/fileconn/in/</fileLocation>
+   		<fileLocation>file://C:/temp/fileconn/in/</fileLocation>
+		<newFileLocation>file://C:/temp/fileconn/out/</newFileLocation>
+		<fileAfterProcess>file://C:/temp/fileconn/after/</fileAfterProcess>
+		<fileBeforeProcess>file://C:/temp/fileconn/before/</fileBeforeProcess>
+	</soapenv:Body>
+</soapenv:Envelope>

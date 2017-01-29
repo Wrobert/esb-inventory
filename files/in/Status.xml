@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<meta:InfoHubPTDaten xmlns:meta="http://www.sbb.ch/schemas/infrastruktur/infohubpt/metadaten" xsi:schemaLocation="http://www.sbb.ch/schemas/infrastruktur/infohubpt/metadaten MetaDaten.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <infoHubPTStatus>
+    <updateEnabled>1</updateEnabled>
+    <zugDatenSequence>54375685</zugDatenSequence>
+    <zusatzTabellenSequence>54375714</zusatzTabellenSequence>
+    <lastUpdateFamos>2016-09-26T10:45:30.000000000</lastUpdateFamos>
+    <statusFamos>OK</statusFamos>
+    <lastUpdateStammdaten>2016-09-26T04:15:29.000000000</lastUpdateStammdaten>
+    <statusStammdaten>OK</statusStammdaten>
+    <lastUpdateTopologieDaten>2016-09-26T04:15:29.000000000</lastUpdateTopologieDaten>
+    <statusTopologieDaten>OK</statusTopologieDaten>
+  </infoHubPTStatus>
+</meta:InfoHubPTDaten>

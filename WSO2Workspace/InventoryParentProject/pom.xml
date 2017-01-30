@@ -10,6 +10,8 @@
   <description>InventoryParentProject</description>
   <modules>
     <module>Inventory-esb</module>
+    <module>ESB-common</module>
+    <module>ESB-common-car</module>
     <module>Inventory-esb-car</module>
   </modules>
   <build>

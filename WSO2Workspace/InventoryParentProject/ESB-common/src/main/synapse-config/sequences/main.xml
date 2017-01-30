@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="main" xmlns="http://ws.apache.org/ns/synapse">
+    <in>
+        <!-- Log all messages passing through -->
+        <!-- Send the messages where they have been sent (i.e. implicit "To" 
+					EPR) -->
+        <log level="custom">
+            <property expression="get-property('To')" name="There is no proxy called:"/>
+            <property name="Please check the URL - " value="Can't find any appropriate service."/>
+        </log>
+        <makefault version="soap11">
+            <code value="soap11Env:VersionMismatch" xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/"/>
+            <reason expression="fn:concat('No such proxy as: ', get-property('To'))"/>
+            <role/>
+        </makefault>
+        <!-- ensure that the default configuration only sends if it is one of samples -->
+        <!-- Otherwise Synapse would be an open proxy by default (BAD!) -->
+        <filter regex="http://localhost:9000.*" source="get-property('To')">
+            <then>
+                <send/>
+            </then>
+            <else/>
+        </filter>
+    </in>
+    <out>
+        <send/>
+    </out>
+</sequence>

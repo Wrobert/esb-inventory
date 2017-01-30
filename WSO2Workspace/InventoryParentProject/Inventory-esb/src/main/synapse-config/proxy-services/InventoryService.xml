@@ -6,14 +6,14 @@
                 <property name="InventoryService" value="Inventory Service Started."/>
                 <property expression="//operation" name="operation"/>
                 <property expression="//contentType" name="contentType"/>
-                <property expression="//fileName" name="fileName"/>
-                <property expression="//fileLocation" name="fileLocation"/>
-                <property expression="//newFileLocation" name="newFileLocation"/>
-                <property expression="//fileBeforeProcess" name="fileBeforeProcess"/>
-                <property expression="//fileAfterProcess" name="fileAfterProcess"/>
+                <property expression="//filePattern" name="filePattern"/>
+                <property expression="//source" name="source"/>
             </log>
-            <log description="logRequest" level="full"/>
-            <!-- property name="FORCE_SC_ACCEPTED" scope="axis2" type="STRING" value="true"/> 
+            <!--  If there is any SOAP FAULT send it to the fault sequence -->
+            <!-- log>
+                <property name="FORCE_ERROR_ON_SOAP_FAULT" value="true"/>
+            </log>  -->
+            <!-- 
             <fileconnector.search>
                 <source>{$ctx:source}</source>
                 <filePattern>.*\.xml</filePattern>
@@ -22,24 +22,26 @@
             <iterate expression="//ns:result/ns:file" xmlns:ns="http://org.wso2.esbconnectors.FileConnector">
                 <target>
                     <sequence>
-                    -->
-            <!-- call-template description="Call FileConnectorTemplate" target="FileConnectorTemplate">  
-                <with-param name="ArgOperation" value="READ"/>
-                <with-param name="ArgContentType" value="Application/xml"/>
-                <with-param name="ArgFileName" value="Status.xml"/>
-                <with-param name="ArgFileLocation" value="file://C:/temp/files/in/"/>
+-->
+            <call-template description="Call FileConnectorTemplate" target="FileConnectorTemplate">
+                <with-param name="ArgOperation" value="{//operation}"/>
+                <with-param name="ArgContentType" value="{//contentType}"/>
+                <with-param name="ArgFilePattern" value="{//filePattern}"/>
+                <with-param name="ArgSource" value="{//source}"/>
+                <with-param name="ArgInputContent" value="{//inputContent}"/>
             </call-template>
-            -->
+            <!-- 
+         </target>
+            </iterate>
+             </sequence>
+
+            <property expression="fn:concat('connector-sap-pi-esb-',fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.xml')" name="transport.vfs.ReplyFileName" scope="transport" type="STRING"/>
             <call-template description="Call FileConnectorTemplate" target="FileConnectorTemplate">
                 <with-param name="ArgOperation" value="WRITE"/>
                 <with-param name="ArgInputContent" value="Hello Robert"/>
                 <with-param name="ArgNewFileLocation" value="file://C:/temp/files/out/my.xml"/>
             </call-template>
-            <!-- 
-                </target>
-            </iterate>
-             </sequence>
-             -->
+-->
             <loopback description="return2caller"/>
         </inSequence>
         <outSequence>
@@ -48,8 +50,14 @@
             </log>
             <send/>
         </outSequence>
-        <faultSequence>
-            <sequence key="FileErrorSequence"/>
+        <faultSequence onError="FileErrorSequence">
+            <log category="ERROR" level="custom">
+                <property name="text" value="Fault Sequence called."/>
+                <property expression="get-property('ERROR_MESSAGE')" name="message"/>
+                <property expression="get-property('ERROR_CODE')" name="code"/>
+                <property expression="get-property('ERROR_DETAIL')" name="detail"/>
+                <property expression="get-property('ERROR_EXCEPTION')" name="exception"/>
+            </log>
             <send/>
         </faultSequence>
     </target>

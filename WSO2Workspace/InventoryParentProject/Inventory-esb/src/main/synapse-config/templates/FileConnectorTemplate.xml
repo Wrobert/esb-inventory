@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template name="FileConnectorTemplate" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="ArgOperation"/>
+    <parameter name="ArgSource"/>
+    <parameter name="ArgFilePattern"/>
     <parameter name="ArgContentType"/>
     <parameter name="ArgInputContent"/>
-    <parameter name="ArgFileName"/>
-    <parameter name="ArgFileLocation"/>
-    <parameter name="ArgNewFileLocation"/>
-    <parameter name="ArgFileBeforeProcess"/>
-    <parameter name="ArgFileAfterProcess"/>
     <sequence>
         <log level="custom" separator=",">
             <property name="FileConnectorTemplate" value="FileConnectorTemplate Started."/>
             <property expression="$func:ArgOperation" name="argOperation"/>
+            <property expression="$func:ArgSource" name="argSource"/>
+            <property expression="$func:ArgFilePattern" name="argFilePattern"/>
+            <property expression="$func:ArgContentType" name="argContentType"/>
+            <property expression="$func:ArgInputContent" name="argInputContent"/>
         </log>
-        <property name="OUT_ONLY" scope="default" type="STRING" value="true"/>
         <switch source="$func:ArgOperation">
             <case regex="READ">
                 <log level="custom">
@@ -21,28 +21,37 @@
                 </log>
                 <!-- READ FILE -->
                 <fileconnector.read>
-                    <source>{$func:ArgFileLocation}</source>
+                    <source>{$func:ArgSource}</source>
                     <contentType>{$func:ArgContentType}</contentType>
-                    <filePattern>{$func:ArgFileName}</filePattern>
+                    <filePattern>{$func:ArgFilePattern}</filePattern>
                 </fileconnector.read>
             </case>
             <case regex="WRITE">
                 <log level="custom">
                     <property name="Selected" value="WRITE"/>
                 </log>
-                <!-- WRITE FILE -->
+                <property name="FORCE_SC_ACCEPTED" scope="transport" type="STRING" value="true"/>
+                <property name="OUT_ONLY" scope="default" type="STRING" value="true"/>
                 <fileconnector.create>
-                    <source>{$func:ArgNewFileLocation}</source>
+                    <source>{$func:ArgSource}</source>
                     <inputContent>{$func:ArgInputContent}</inputContent>
                     <encoding>UTF-8</encoding>
                 </fileconnector.create>
             </case>
+            <default>
+                <log level="custom">
+                    <property name="ArgOperation" value="Undefined."/>
+                    <property expression="get-property('argOperation')" name="Default process selected because of operation = "/>
+                </log>
+            </default>
+        </switch>
+        <!-- 
             <case regex="MOVE">
                 <log level="custom">
                     <property expression="get-property('ArgOperation')" name="ArgOperation"/>
                 </log>
                 <fileconnector.move>
-                    <source>{$ctx:ArgFileLocation}</source>
+                    <source>{$ctx:ArgSource}</source>
                     <destination>{$ctx:ArgFileAfterProcess}</destination>
                 </fileconnector.move>
             </case>
@@ -52,8 +61,8 @@
                 </log>
                 <fileconnector.copy>
                     <source>{$ctx:ArgFileBeforeProcess}</source>
-                    <destination>{$ctx:ArgFileLocation}</destination>
-                    <filePattern>{$ctx:ArgFileName}</filePattern>
+                    <destination>{$ctx:ArgSource}</destination>
+                    <filePattern>{$ctx:ArgFilePattern}</filePattern>
                 </fileconnector.copy>
             </case>
             <case regex="DELETE">
@@ -61,15 +70,9 @@
                     <property expression="get-property('ArgOperation')" name="ArgOperation"/>
                 </log>
                 <fileconnector.delete>
-                    <source>{$ctx:ArgFileLocation}</source>
+                    <source>{$ctx:ArgSource}</source>
                 </fileconnector.delete>
             </case>
-            <default>
-                <log level="custom">
-                    <property name="ArgOperation" value="Undefined."/>
-                    <property expression="get-property('ArgOperation')" name="Default selected because of"/>
-                </log>
-            </default>
-        </switch>
+  -->
     </sequence>
 </template>

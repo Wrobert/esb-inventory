@@ -5,13 +5,6 @@
     </log>
     <log category="ERROR" level="custom">
         <property expression="get-property('ERROR_MESSAGE')" name="message"/>
-        <property expression="get-property('ERROR_CODE')" name="code"/>
-        <property expression="get-property('ERROR_DETAIL')" name="detail"/>
-        <property expression="get-property('ERROR_EXCEPTION')" name="exception"/>
     </log>
-    <!--  <drop/>  -->
-    <makefault description="fileFault" version="soap11">
-        <code value="soap11Env:VersionMismatch" xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/"/>
-        <reason expression="get-property('ERROR_MESSAGE')"/>
-    </makefault>
+    <respond/>
 </sequence>

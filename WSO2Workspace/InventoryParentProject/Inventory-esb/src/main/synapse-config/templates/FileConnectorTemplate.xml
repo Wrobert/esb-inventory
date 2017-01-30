@@ -17,7 +17,7 @@
         <switch source="$func:ArgOperation">
             <case regex="READ">
                 <log level="custom">
-                    <property name="Selected" value="READ"/>
+                    <property name="Case" value="READ"/>
                 </log>
                 <!-- READ FILE -->
                 <fileconnector.read>
@@ -28,7 +28,7 @@
             </case>
             <case regex="WRITE">
                 <log level="custom">
-                    <property name="Selected" value="WRITE"/>
+                    <property name="Case" value="WRITE"/>
                 </log>
                 <property name="FORCE_SC_ACCEPTED" scope="transport" type="STRING" value="true"/>
                 <property name="OUT_ONLY" scope="default" type="STRING" value="true"/>
@@ -37,6 +37,14 @@
                     <inputContent>{$func:ArgInputContent}</inputContent>
                     <encoding>UTF-8</encoding>
                 </fileconnector.create>
+            </case>
+            <case regex="DELETE">
+                <log level="custom">
+                    <property name="Case" value="DELETE"/>
+                </log>
+                <fileconnector.delete>
+                    <source>{$func:ArgSource}</source>
+                </fileconnector.delete>
             </case>
             <default>
                 <log level="custom">
@@ -64,14 +72,6 @@
                     <destination>{$ctx:ArgSource}</destination>
                     <filePattern>{$ctx:ArgFilePattern}</filePattern>
                 </fileconnector.copy>
-            </case>
-            <case regex="DELETE">
-                <log level="custom">
-                    <property expression="get-property('ArgOperation')" name="ArgOperation"/>
-                </log>
-                <fileconnector.delete>
-                    <source>{$ctx:ArgSource}</source>
-                </fileconnector.delete>
             </case>
   -->
     </sequence>

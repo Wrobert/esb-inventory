@@ -5,6 +5,7 @@
     <parameter name="ArgFilePattern"/>
     <parameter name="ArgContentType"/>
     <parameter name="ArgInputContent"/>
+    <parameter name="ArgDestination"/>
     <sequence>
         <log level="custom" separator=",">
             <property name="FileConnectorTemplate" value="FileConnectorTemplate Started."/>
@@ -13,6 +14,7 @@
             <property expression="$func:ArgFilePattern" name="argFilePattern"/>
             <property expression="$func:ArgContentType" name="argContentType"/>
             <property expression="$func:ArgInputContent" name="argInputContent"/>
+            <property expression="$func:ArgDestination" name="argDestination"/>
         </log>
         <switch source="$func:ArgOperation">
             <case regex="READ">
@@ -46,6 +48,24 @@
                     <source>{$func:ArgSource}</source>
                 </fileconnector.delete>
             </case>
+            <case regex="MOVE">
+                <log level="custom">
+                    <property name="Case" value="MOVE"/>
+                </log>
+                <fileconnector.move>
+                    <source>{$func:ArgSource}</source>
+                    <destination>{$func:ArgDestination}</destination>
+                </fileconnector.move>
+            </case>
+            <case regex="COPY">
+                <log level="custom">
+                    <property name="Case" value="COPY"/>
+                </log>
+                <fileconnector.move>
+                    <source>{$func:ArgSource}</source>
+                    <destination>{$func:ArgDestination}</destination>
+                </fileconnector.move>
+            </case>
             <default>
                 <log level="custom">
                     <property name="ArgOperation" value="Undefined."/>
@@ -53,26 +73,5 @@
                 </log>
             </default>
         </switch>
-        <!-- 
-            <case regex="MOVE">
-                <log level="custom">
-                    <property expression="get-property('ArgOperation')" name="ArgOperation"/>
-                </log>
-                <fileconnector.move>
-                    <source>{$ctx:ArgSource}</source>
-                    <destination>{$ctx:ArgFileAfterProcess}</destination>
-                </fileconnector.move>
-            </case>
-            <case regex="COPY">
-                <log level="custom">
-                    <property expression="get-property('ArgOperation')" name="ArgOperation"/>
-                </log>
-                <fileconnector.copy>
-                    <source>{$ctx:ArgFileBeforeProcess}</source>
-                    <destination>{$ctx:ArgSource}</destination>
-                    <filePattern>{$ctx:ArgFilePattern}</filePattern>
-                </fileconnector.copy>
-            </case>
-  -->
     </sequence>
 </template>

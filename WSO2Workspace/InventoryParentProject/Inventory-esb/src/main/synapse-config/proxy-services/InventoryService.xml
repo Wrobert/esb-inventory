@@ -8,6 +8,7 @@
                 <property expression="//contentType" name="contentType"/>
                 <property expression="//filePattern" name="filePattern"/>
                 <property expression="//source" name="source"/>
+                <property expression="//destination" name="destination"/>
             </log>
             <!--  If there is any SOAP FAULT send it to the fault sequence -->
             <!-- log>
@@ -28,6 +29,7 @@
                 <with-param name="ArgContentType" value="{//contentType}"/>
                 <with-param name="ArgFilePattern" value="{//filePattern}"/>
                 <with-param name="ArgSource" value="{//source}"/>
+                <with-param name="ArgDestination" value="{//destination}"/>
                 <with-param name="ArgInputContent" value="{//inputContent}"/>
             </call-template>
             <!-- 

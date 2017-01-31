@@ -5,4 +5,7 @@
     <artifact name="main" groupId="com.rwy.ESB-common.sequence" version="1.0.0" type="synapse/sequence" serverRole="EnterpriseServiceBus">
         <file>src/main/synapse-config/sequences/main.xml</file>
     </artifact>
+    <artifact name="FileConnectorTemplate" groupId="com.rwy.ESB-common.template" version="1.0.0" type="synapse/template" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/templates/FileConnectorTemplate.xml</file>
+    </artifact>
 </artifacts>

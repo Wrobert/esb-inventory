@@ -38,11 +38,6 @@
              </sequence>
 
             <property expression="fn:concat('connector-sap-pi-esb-',fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.xml')" name="transport.vfs.ReplyFileName" scope="transport" type="STRING"/>
-            <call-template description="Call FileConnectorTemplate" target="FileConnectorTemplate">
-                <with-param name="ArgOperation" value="WRITE"/>
-                <with-param name="ArgInputContent" value="Hello Robert"/>
-                <with-param name="ArgNewFileLocation" value="file://C:/temp/files/out/my.xml"/>
-            </call-template>
 -->
             <loopback description="return2caller"/>
         </inSequence>
